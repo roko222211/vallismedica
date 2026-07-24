@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const spec = (await getCollection('specijalnosti')).sort(
+  (a, b) => (a.data.broj ?? 99) - (b.data.broj ?? 99)
+);
+---
+<Base
+  title={'Specijalnosti — Poliklinika Vallis Medica'}
+  description={'Sve specijalističke ordinacije Poliklinike Vallis Medica — ginekologija, kardiologija, ortopedija, neurologija, dentalna medicina i više.'}
+>
+  <div class="phero">
+    <div class="container">
+      <p class="crumb"><a href="/">Početna</a> · Specijalnosti</p>
+      <h1>Specijalnosti</h1>
+      <p class="tagline">Četrnaest ordinacija pod jednim krovom</p>
+    </div>
+  </div>
+
+  <section class="toc-sec" style="border-top:0">
+    <div class="container">
+      <div class="toc">
+        {spec.map((s) => (
+          <a class="toc-item reveal" href={`/specijalnosti/${s.id}`}>
+            <span class="toc-no">{String(s.data.broj ?? 0).padStart(2, '0')}</span>
+            <span class="toc-main">
+              <span class="toc-name">{s.data.naslov}</span>
+              <span class="toc-lead"></span>
+            </span>
+            <span class="toc-desc">{s.data.kratki}</span>
+            <span class="toc-go">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

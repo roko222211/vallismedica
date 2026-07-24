@@ -1,0 +1,158 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { formatDate as fmt } from '../lib/date';
+import kontakt from '../data/kontakt.json';
+
+const spec = (await getCollection('specijalnosti')).sort(
+  (a, b) => (a.data.broj ?? 99) - (b.data.broj ?? 99)
+);
+const latest = (await getCollection('novosti'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+---
+<Base
+  title={'Poliklinika Vallis Medica — S Vama od 1998.'}
+  description={'Poliklinika Vallis Medica, Zagreb — 14 specijalističkih ordinacija i renomirani liječnici iz najboljih zdravstvenih ustanova u Hrvatskoj. S Vama od 1998.'}
+>
+<main>
+
+<!-- ===== HERO / naslovnica ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <p class="kick reveal">Poliklinika · Zagreb · Est. MCMXCVIII</p>
+        <h1 class="reveal d1">Zdravlje s<br /><em>potpisom struke.</em></h1>
+        <p class="lede reveal d2">Poliklinika Vallis Medica pruža usluge renomiranih liječnika iz najboljih zdravstvenih ustanova u Hrvatskoj — kroz četrnaest specijalističkih ordinacija, s predanošću pacijentu od 1998. godine.</p>
+        <div class="hero-actions reveal d3">
+          <a class="cta" href="/narucivanje">Naručite se <span class="arw">→</span></a>
+          <a class="cta ghost" href="#specijalnosti">Specijalnosti</a>
+        </div>
+      </div>
+      <div class="hero-side reveal d2">
+        <div class="seal" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <defs><path id="sealcirc" d="M60,60 m0,-50 a50,50 0 1,1 0,100 a50,50 0 1,1 0,-100" /></defs>
+            <circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="0.8" />
+            <circle cx="60" cy="60" r="44" fill="none" stroke="currentColor" stroke-width="0.8" />
+            <text font-family="'IBM Plex Mono', monospace" font-size="7.4" letter-spacing="2.4" fill="currentColor">
+              <textPath href="#sealcirc" startOffset="0">· POLIKLINIKA VALLIS MEDICA · OD 1998. </textPath>
+            </text>
+          </svg>
+          <div class="mid"><b>VM</b><span>od 1998.</span></div>
+        </div>
+        <figure class="hero-figure">
+          <img src="/images/appointment/bg.jpg" alt="Liječnički tim Poliklinike Vallis Medica" />
+          <figcaption class="figcap"><span>Vallis Medica</span><span>Zagreb</span></figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="hero-strip reveal d3">
+      <div class="st"><b>1998.</b><span>Godina osnivanja</span></div>
+      <div class="st"><b>14</b><span>Specijalnosti</span></div>
+      <div class="st"><b>Renomirani</b><span>Liječnici</span></div>
+      <div class="st"><b>Zagreb</b><span>Božidarevićeva 7</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SPECIJALNOSTI — editorial sadržaj ===== -->
+<section class="toc-sec" id="specijalnosti">
+  <div class="container">
+    <div class="sec-top">
+      <h2>Sadržaj <em>specijalnosti</em></h2>
+      <p class="note">Četrnaest ordinacija pod jednim krovom. O vašem zdravlju brinu renomirani liječnici — od ginekologije i kardiologije do dentalne medicine.</p>
+    </div>
+    <div class="toc">
+      {spec.map((s) => (
+        <a class="toc-item reveal" href={`/specijalnosti/${s.id}`}>
+          <span class="toc-no">{String(s.data.broj ?? 0).padStart(2, '0')}</span>
+          <span class="toc-main">
+            <span class="toc-name">{s.data.naslov}</span>
+            <span class="toc-lead"></span>
+          </span>
+          <span class="toc-desc">{s.data.kratki}</span>
+          <span class="toc-go">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ===== O NAMA ===== -->
+<section class="about">
+  <div class="container about-grid">
+    <div class="media reveal">
+      <img src="/images/about-us/ultra1.jpg" alt="Ultrazvučna dijagnostika u Poliklinici Vallis Medica" />
+    </div>
+    <div>
+      <p class="kick reveal">O nama — Od 1998.</p>
+      <h2 class="reveal d1" style="font-size:clamp(1.9rem,4vw,2.9rem);margin:18px 0 22px">Višegodišnja tradicija <em style="color:var(--blue)">kvalitete</em></h2>
+      <p class="lead-first reveal d1">Poliklinika Vallis Medica osnovana je 1998. godine. Njezina višegodišnja tradicija govori o kvaliteti usluge i predanosti pacijentu. <strong>O vašem zdravlju brinu renomirani liječnici iz najboljih zdravstvenih ustanova.</strong></p>
+      <div class="marks reveal d2">
+        <div class="mark"><span class="n">01</span><p><strong>Briga i skrb</strong> za naše pacijente.</p></div>
+        <div class="mark"><span class="n">02</span><p><strong>Stručni pregledi</strong>, mišljenja i dijagnoze.</p></div>
+        <div class="mark"><span class="n">03</span><p><strong>Najnovije tehnologije</strong> u medicini.</p></div>
+      </div>
+      <a class="cta ghost reveal d3" href="/o-nama">Više o nama <span class="arw">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RADNO VRIJEME ===== -->
+<section style="padding-top:0">
+  <div class="container hours-wrap">
+    <div class="hours-copy">
+      <p class="kick reveal">Radno vrijeme</p>
+      <h2 class="reveal d1">Kad smo <em style="color:var(--blue)">otvoreni</em></h2>
+      <p class="reveal d2">Naručite se telefonski ili putem obrasca — termin je potvrđen tek nakon našeg odgovora. Za hitne upite nazovite nas u radno vrijeme.</p>
+      <a class="cta reveal d2" href="/narucivanje">Obrazac za naručivanje <span class="arw">→</span></a>
+    </div>
+    <div class="hours-card reveal d1">
+      <p class="kick plain">Ordinacija</p>
+      <h3>Radno vrijeme</h3>
+      <table>
+        {kontakt.radno_vrijeme.map((r) => (
+          <tr><td>{r.dan}</td><td>{r.sat}</td></tr>
+        ))}
+      </table>
+    </div>
+  </div>
+</section>
+
+{latest.length > 0 && (
+  <section style="padding-top:0">
+    <div class="container">
+      <div class="sec-top">
+        <h2>Novosti</h2>
+        <p class="note"><a class="cta ghost" href="/novosti">Sve novosti →</a></p>
+      </div>
+      <div class="news-row">
+        {latest.map((item) => (
+          <a class="ncard reveal" href={`/novosti/${item.id}`}>
+            <p class="nd">{fmt(item.data.date)}</p>
+            <h3>{item.data.title}</h3>
+            {item.data.summary && <p>{item.data.summary}</p>}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<!-- ===== CTA ===== -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="band reveal">
+      <p class="kick">Naručivanje</p>
+      <h2>Naručite se na pregled</h2>
+      <p>Nazovite <a href={`tel:${kontakt.telefon.replace(/\s/g, '')}`}>{kontakt.telefon_display}</a> ili pišite na <a href={`mailto:${kontakt.email}`}>{kontakt.email}</a></p>
+      <a class="cta light" href="/narucivanje">Obrazac za naručivanje <span class="arw">→</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+</Base>

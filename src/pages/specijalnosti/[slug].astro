@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import kontakt from '../../data/kontakt.json';
+
+export async function getStaticPaths() {
+  const items = await getCollection('specijalnosti');
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const d = item.data;
+---
+<Base
+  title={`${d.naslov} — Poliklinika Vallis Medica`}
+  description={`${d.naslov} — ${d.kratki}. Poliklinika Vallis Medica, Zagreb.`}
+>
+  <div class="phero">
+    <div class="container">
+      <p class="crumb"><a href="/">Početna</a> · <a href="/#specijalnosti">Specijalnosti</a> · {String(d.broj ?? 0).padStart(2, '0')}</p>
+      <h1>{d.naslov}</h1>
+      {d.kratki && <p class="tagline">{d.kratki}</p>}
+    </div>
+  </div>
+
+  <section>
+    <div class="container cols2">
+      <div class="prose">
+        <Content />
+      </div>
+      <div class="reveal">
+        <p class="kick">Što nudimo</p>
+        <div class="ulist">
+          {d.usluge.map((u) => (
+            <div class="uitem"><span class="c">✓</span><b>{u}</b></div>
+          ))}
+        </div>
+        <a class="cta" href="/narucivanje" style="margin-top:30px">Naručite se <span class="arw">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="container">
+      <div class="band">
+        <p class="kick">Naručivanje</p>
+        <h2>Naručite se na pregled</h2>
+        <p>Nazovite <a href={`tel:${kontakt.telefon.replace(/\s/g, '')}`}>{kontakt.telefon_display}</a> ili ispunite obrazac za naručivanje.</p>
+        <a class="cta light" href="/narucivanje">Obrazac za naručivanje <span class="arw">→</span></a>
+      </div>
+    </div>
+  </section>
+</Base>

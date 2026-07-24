@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { formatDate as fmt } from '../../lib/date';
+
+const items = (await getCollection('novosti')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+---
+<Base
+  title={'Novosti — Poliklinika Vallis Medica'}
+  description={'Novosti i obavijesti Poliklinike Vallis Medica — termini, usluge i događanja.'}
+>
+  <div class="phero">
+    <div class="container">
+      <p class="crumb"><a href="/">Početna</a> · Novosti</p>
+      <h1>Novosti</h1>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      {items.length === 0 ? (
+        <p style="color:var(--muted)">Trenutno nema objavljenih novosti.</p>
+      ) : (
+        <div class="news-grid">
+          {items.map((item) => (
+            <a class="nc" href={`/novosti/${item.id}`}>
+              {item.data.coverImage && (
+                <span class="thumb"><img src={item.data.coverImage} alt={item.data.title} loading="lazy" /></span>
+              )}
+              <span class="in">
+                <span class="nd">{fmt(item.data.date)}</span>
+                <h3>{item.data.title}</h3>
+                {item.data.summary && <p>{item.data.summary}</p>}
+              </span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>

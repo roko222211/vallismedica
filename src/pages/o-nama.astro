@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import kontakt from '../data/kontakt.json';
+---
+<Base
+  title={'O nama — Poliklinika Vallis Medica'}
+  description={'Poliklinika Vallis Medica osnovana je 1998. godine — višegodišnja tradicija kvalitete usluge i predanosti pacijentu.'}
+>
+  <div class="phero">
+    <div class="container">
+      <p class="crumb"><a href="/">Početna</a> · O nama</p>
+      <h1>O nama</h1>
+      <p class="tagline">S Vama od 1998.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="container cols2">
+      <div>
+        <p class="kick reveal">Poliklinika Vallis Medica</p>
+        <div class="prose reveal d1" style="margin-top:18px">
+          <p class="lead-first">Poliklinika Vallis Medica osnovana je 1998. godine. Njezina višegodišnja tradicija govori o kvaliteti usluge i predanosti pacijentu.</p>
+          <p>O vašem zdravlju brinu <strong>renomirani liječnici iz najboljih zdravstvenih ustanova</strong> u Hrvatskoj. Kroz četrnaest specijalističkih ordinacija pružamo sveobuhvatnu skrb — od ginekologije i kardiologije do dentalne medicine — uz najnovije dijagnostičke tehnologije.</p>
+        </div>
+        <div class="marks reveal d2">
+          <div class="mark"><span class="n">01</span><p><strong>Briga i skrb</strong> za naše pacijente.</p></div>
+          <div class="mark"><span class="n">02</span><p><strong>Stručni pregledi</strong>, mišljenja i dijagnoze.</p></div>
+          <div class="mark"><span class="n">03</span><p><strong>Pratimo najnovije tehnologije</strong> u medicini.</p></div>
+        </div>
+      </div>
+      <div class="hours-card reveal d1">
+        <p class="kick plain">Ordinacija</p>
+        <h3>Radno vrijeme</h3>
+        <table>
+          {kontakt.radno_vrijeme.map((r) => (
+            <tr><td>{r.dan}</td><td>{r.sat}</td></tr>
+          ))}
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="container">
+      <div class="band">
+        <p class="kick">Naručivanje</p>
+        <h2>Naručite se na pregled</h2>
+        <p>Nazovite <a href={`tel:${kontakt.telefon.replace(/\s/g, '')}`}>{kontakt.telefon_display}</a> ili ispunite obrazac za naručivanje.</p>
+        <a class="cta light" href="/narucivanje">Obrazac za naručivanje <span class="arw">→</span></a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,15 @@
+{
+  "adresa": "Božidarevićeva 7, 10000 Zagreb, Hrvatska",
+  "adresa_kratko": "Božidarevićeva 7, Zagreb",
+  "telefon": "+385 1 2305 444",
+  "telefon_display": "+385 1 2305 444",
+  "email": "info@poliklinikavm.hr",
+  "radno_vrijeme": [
+    { "dan": "Ponedjeljak", "sat": "8:00 – 21:00" },
+    { "dan": "Utorak", "sat": "8:00 – 21:00" },
+    { "dan": "Srijeda", "sat": "8:00 – 21:00" },
+    { "dan": "Četvrtak", "sat": "13:00 – 20:00" },
+    { "dan": "Petak", "sat": "8:00 – 21:00" },
+    { "dan": "Subota i nedjelja", "sat": "Prema dogovoru" }
+  ]
+}

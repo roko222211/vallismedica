@@ -1,0 +1,147 @@
+media:
+  input: public/images
+  output: /images
+  categories: [image]
+  rename: safe
+
+content:
+  - name: specijalnosti
+    label: Specijalnosti
+    type: collection
+    path: src/content/specijalnosti
+    format: yaml-frontmatter
+    filename: "{fields.naslov}.mdoc"
+    view:
+      fields: [naslov, broj, kratki]
+      primary: naslov
+      sort: [broj, naslov]
+      default:
+        sort: broj
+        order: asc
+    fields:
+      - name: naslov
+        label: Naziv specijalnosti
+        type: string
+        required: true
+      - name: broj
+        label: Redoslijed
+        type: number
+        description: Broj za sortiranje na naslovnici (1, 2, 3…).
+      - name: kratki
+        label: Kratki opis
+        type: text
+        description: Kratak opis uz naziv (prikazuje se u sadržaju na naslovnici).
+      - name: usluge
+        label: Popis usluga
+        type: string
+        list: true
+        description: Usluge koje se prikazuju na stranici specijalnosti.
+      - name: body
+        label: Tekst stranice
+        type: rich-text
+        options:
+          format: markdown
+          path: public/images
+          categories: [image]
+          extensions: [jpg, jpeg, png, webp, gif]
+          rename: safe
+
+  - name: novosti
+    label: Novosti
+    type: collection
+    path: src/content/novosti
+    format: yaml-frontmatter
+    filename: "{fields.title}.mdoc"
+    view:
+      fields: [title, date, summary]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Naslov
+        type: string
+        required: true
+      - name: date
+        label: Datum objave
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: summary
+        label: Kratki sažetak
+        type: text
+        options:
+          maxlength: 300
+      - name: coverImage
+        label: Naslovna slika
+        type: image
+        options:
+          path: public/images/novosti
+          categories: [image]
+          extensions: [jpg, jpeg, png, webp, gif]
+          rename: safe
+      - name: body
+        label: Sadržaj
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          path: public/images/novosti
+          categories: [image]
+          extensions: [jpg, jpeg, png, webp, gif]
+          rename: safe
+
+  - name: obavijest
+    label: Obavijesna traka
+    type: file
+    path: src/data/obavijest.json
+    format: json
+    fields:
+      - name: aktivna
+        label: Prikaži traku
+        type: boolean
+      - name: oznaka
+        label: Oznaka
+        type: string
+      - name: tekst
+        label: Tekst
+        type: text
+      - name: telefon
+        label: Telefon (opcionalno)
+        type: string
+
+  - name: kontakt
+    label: Kontakt i radno vrijeme
+    type: file
+    path: src/data/kontakt.json
+    format: json
+    fields:
+      - name: adresa
+        label: Adresa (puna)
+        type: string
+      - name: adresa_kratko
+        label: Adresa (kratka)
+        type: string
+      - name: telefon
+        label: Telefon (za pozivanje)
+        type: string
+      - name: telefon_display
+        label: Telefon (prikaz)
+        type: string
+      - name: email
+        label: E-mail
+        type: string
+      - name: radno_vrijeme
+        label: Radno vrijeme
+        type: object
+        list: true
+        fields:
+          - name: dan
+            label: Dan
+            type: string
+          - name: sat
+            label: Vrijeme
+            type: string
