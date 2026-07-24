@@ -12,24 +12,21 @@ const spec = (await getCollection('specijalnosti')).sort(
 >
   <div class="phero">
     <div class="container">
-      <p class="crumb"><a href="/">Početna</a> · Specijalnosti</p>
+      <p class="crumb"><a href="/">Početna</a> — Specijalnosti</p>
       <h1>Specijalnosti</h1>
-      <p class="tagline">Četrnaest ordinacija pod jednim krovom</p>
+      <p class="tagline">Četrnaest ordinacija pod jednim krovom.</p>
     </div>
   </div>
 
-  <section class="toc-sec" style="border-top:0">
+  <section class="reg-sec">
     <div class="container">
-      <div class="toc">
+      <div class="reg" style="border-top:0">
         {spec.map((s) => (
-          <a class="toc-item reveal" href={`/specijalnosti/${s.id}`}>
-            <span class="toc-no">{String(s.data.broj ?? 0).padStart(2, '0')}</span>
-            <span class="toc-main">
-              <span class="toc-name">{s.data.naslov}</span>
-              <span class="toc-lead"></span>
-            </span>
-            <span class="toc-desc">{s.data.kratki}</span>
-            <span class="toc-go">→</span>
+          <a class="reg-item" href={`/specijalnosti/${s.id}`}>
+            <span class="reg-num">{String(s.data.broj ?? 0).padStart(2, '0')}</span>
+            <span class="reg-name">{s.data.naslov}</span>
+            <span class="reg-desc">{s.data.kratki}</span>
+            <span class="reg-go" aria-hidden="true">→</span>
           </a>
         ))}
       </div>

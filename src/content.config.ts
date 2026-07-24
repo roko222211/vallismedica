@@ -6,6 +6,7 @@ const specijalnosti = defineCollection({
   schema: z.object({
     naslov: z.string(),
     broj: z.coerce.number().optional(),
+    ikona: z.string().optional().default(''),
     kratki: z.string().optional().default(''),
     usluge: z.array(z.string()).optional().default([]),
   }),

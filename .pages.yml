@@ -27,6 +27,10 @@ content:
         label: Redoslijed
         type: number
         description: Broj za sortiranje na naslovnici (1, 2, 3…).
+      - name: ikona
+        label: Ikona (CSS klasa)
+        type: string
+        description: "Klasa medicinske ikone, npr. icon-medical-i-cardiology."
       - name: kratki
         label: Kratki opis
         type: text

@@ -30,10 +30,10 @@ const d = item.data;
         <Content />
       </div>
       <div class="reveal">
-        <p class="kick">Što nudimo</p>
+        <p class="uhead">Što nudimo</p>
         <div class="ulist">
-          {d.usluge.map((u) => (
-            <div class="uitem"><span class="c">✓</span><b>{u}</b></div>
+          {d.usluge.map((u, i) => (
+            <div class="uitem"><span class="c">{String(i + 1).padStart(2, '0')}</span><b>{u}</b></div>
           ))}
         </div>
         <a class="cta" href="/narucivanje" style="margin-top:30px">Naručite se <span class="arw">→</span></a>
