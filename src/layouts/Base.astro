@@ -26,6 +26,27 @@ const act = {
   novosti: path.startsWith('/novosti'),
   kontakt: path === '/kontakt',
 };
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
+const ogImage = Astro.site ? new URL('/images/logo-medical@2x.png', Astro.site).href : '/images/logo-medical@2x.png';
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalClinic',
+  name: 'Poliklinika Vallis Medica',
+  url: Astro.site?.href ?? 'https://poliklinikavm.hr',
+  telephone: kontakt.telefon,
+  email: kontakt.email,
+  image: ogImage,
+  foundingDate: '1998',
+  areaServed: 'Zagreb',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Božidarevićeva 7',
+    postalCode: '10000',
+    addressLocality: 'Zagreb',
+    addressCountry: 'HR',
+  },
+};
 ---
 <!DOCTYPE html>
 <html lang="hr">
@@ -35,6 +56,17 @@ const act = {
 <title>{title}</title>
 {description && <meta name="description" content={description} />}
 {noindex && <meta name="robots" content="noindex" />}
+<link rel="canonical" href={canonical} />
+<meta name="theme-color" content="#12698e" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Poliklinika Vallis Medica" />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="hr_HR" />
+<meta name="twitter:card" content="summary" />
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
 <link rel="icon" href="/images/logo-medical.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -42,11 +74,12 @@ const act = {
 <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+<a class="skip" href="#sadrzaj">Preskoči na sadržaj</a>
 
 <!-- Gornja info-traka -->
 <div class="topbar">
   <div class="container">
-    <a class="ti" href="/o-nama">
+    <a class="ti radno" href="/o-nama">
       <svg viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>
       Radno vrijeme
     </a>
@@ -69,10 +102,10 @@ const act = {
 <header class="site-header">
   <div class="container">
     <a class="brand" href="/"><img src="/images/logo-medical@2x.png" alt="Poliklinika Vallis Medica" /></a>
-    <button class="nav-toggle" aria-label="Izbornik" onclick="document.querySelector('.main-nav').classList.toggle('open')">
+    <button class="nav-toggle" aria-label="Otvori izbornik" aria-expanded="false" aria-controls="mainnav" onclick="const n=document.getElementById('mainnav');const o=n.classList.toggle('open');this.setAttribute('aria-expanded',String(o));this.setAttribute('aria-label',o?'Zatvori izbornik':'Otvori izbornik')">
       <span></span><span></span><span></span>
     </button>
-    <nav class="main-nav">
+    <nav class="main-nav" id="mainnav" aria-label="Glavna navigacija">
       <div><a href="/" class={act.home ? 'active' : ''}>Početna</a></div>
       <div>
         <a href="/#usluge" class={act.usluge ? 'active' : ''}>Usluge</a>
@@ -87,7 +120,7 @@ const act = {
   </div>
 </header>
 
-<slot />
+<main id="sadrzaj"><slot /></main>
 
 <!-- Footer -->
 <footer class="site-footer">
