@@ -7,26 +7,27 @@ const spec = (await getCollection('specijalnosti')).sort(
 );
 ---
 <Base
-  title={'Specijalnosti — Poliklinika Vallis Medica'}
-  description={'Sve specijalističke ordinacije Poliklinike Vallis Medica — ginekologija, kardiologija, ortopedija, neurologija, dentalna medicina i više.'}
+  title={'Usluge — Poliklinika Vallis Medica'}
+  description={'Specijalističke ordinacije Poliklinike Vallis Medica — ginekologija, kardiologija, ortopedija, neurologija, dentalna medicina i više.'}
 >
-  <div class="phero">
+  <div class="page-hero">
     <div class="container">
-      <p class="crumb"><a href="/">Početna</a> — Specijalnosti</p>
-      <h1>Specijalnosti</h1>
-      <p class="tagline">Četrnaest ordinacija pod jednim krovom.</p>
+      <p class="crumb"><a href="/">Početna</a> / Usluge</p>
+      <h1>Naše usluge</h1>
+      <p class="tagline">Četrnaest specijalističkih ordinacija pod jednim krovom.</p>
     </div>
   </div>
 
-  <section class="reg-sec">
+  <section>
     <div class="container">
-      <div class="reg" style="border-top:0">
+      <div class="fgrid">
         {spec.map((s) => (
-          <a class="reg-item" href={`/specijalnosti/${s.id}`}>
-            <span class="reg-num">{String(s.data.broj ?? 0).padStart(2, '0')}</span>
-            <span class="reg-name">{s.data.naslov}</span>
-            <span class="reg-desc">{s.data.kratki}</span>
-            <span class="reg-go" aria-hidden="true">→</span>
+          <a class="fbox" href={`/specijalnosti/${s.id}`}>
+            <i class={s.data.ikona} aria-hidden="true"></i>
+            <div>
+              <h3>{s.data.naslov}</h3>
+              <p>{s.data.kratki}</p>
+            </div>
           </a>
         ))}
       </div>

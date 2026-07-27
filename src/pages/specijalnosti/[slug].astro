@@ -11,43 +11,39 @@ export async function getStaticPaths() {
 const { item } = Astro.props;
 const { Content } = await render(item);
 const d = item.data;
+const telHref = '+' + kontakt.telefon.replace(/\D/g, '').replace(/^00/, '');
 ---
 <Base
   title={`${d.naslov} — Poliklinika Vallis Medica`}
   description={`${d.naslov} — ${d.kratki}. Poliklinika Vallis Medica, Zagreb.`}
 >
-  <div class="phero">
+  <div class="page-hero">
     <div class="container">
-      <p class="crumb"><a href="/">Početna</a> · <a href="/#specijalnosti">Specijalnosti</a> · {String(d.broj ?? 0).padStart(2, '0')}</p>
+      <p class="crumb"><a href="/">Početna</a> / <a href="/#usluge">Usluge</a></p>
       <h1>{d.naslov}</h1>
       {d.kratki && <p class="tagline">{d.kratki}</p>}
     </div>
   </div>
 
   <section>
-    <div class="container cols2">
-      <div class="prose">
-        <Content />
-      </div>
-      <div class="reveal">
-        <p class="uhead">Što nudimo</p>
-        <div class="ulist">
-          {d.usluge.map((u, i) => (
-            <div class="uitem"><span class="c">{String(i + 1).padStart(2, '0')}</span><b>{u}</b></div>
-          ))}
-        </div>
-        <a class="cta" href="/narucivanje" style="margin-top:30px">Naručite se <span class="arw">→</span></a>
+    <div class="container">
+      <div class="prose" style="margin-bottom:26px"><Content /></div>
+      <span class="kicker">Usluge</span>
+      <h2 class="section-title">Što nudimo</h2>
+      <div class="usluge-list">
+        {d.usluge.map((u) => (
+          <div class="usluga"><span class="check">✓</span><div><b>{u}</b></div></div>
+        ))}
       </div>
     </div>
   </section>
 
   <section style="padding-top:0">
-    <div class="container">
-      <div class="band">
-        <p class="kick">Naručivanje</p>
-        <h2>Naručite se na pregled</h2>
-        <p>Nazovite <a href={`tel:${kontakt.telefon.replace(/\s/g, '')}`}>{kontakt.telefon_display}</a> ili ispunite obrazac za naručivanje.</p>
-        <a class="cta light" href="/narucivanje">Obrazac za naručivanje <span class="arw">→</span></a>
+    <div class="cta-band">
+      <div class="container">
+        <h2>Naručite se</h2>
+        <p>Nazovite <a href={`tel:${telHref}`}>{kontakt.telefon_display}</a> ili ispunite obrazac za naručivanje.</p>
+        <a class="btn" href="/narucivanje">Naručivanje</a>
       </div>
     </div>
   </section>

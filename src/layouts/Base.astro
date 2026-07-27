@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import obavijest from '../data/obavijest.json';
 import kontakt from '../data/kontakt.json';
 
 interface Props {
@@ -19,12 +18,14 @@ const telHref = (s: string): string => {
   return d ? '+' + d.replace(/^00/, '') : '';
 };
 
-const dismissKey = (() => {
-  const s = obavijest?.tekst || '';
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
-  return 'vm-obav-' + h;
-})();
+const path = (Astro.url.pathname.replace(/\/+$/, '') || '/');
+const act = {
+  home: path === '/',
+  usluge: path.startsWith('/specijalnosti'),
+  onama: path === '/o-nama',
+  novosti: path.startsWith('/novosti'),
+  kontakt: path === '/kontakt',
+};
 ---
 <!DOCTYPE html>
 <html lang="hr">
@@ -37,140 +38,107 @@ const dismissKey = (() => {
 <link rel="icon" href="/images/logo-medical.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
 
-{obavijest?.aktivna && (
-  <div class="announce" id="announce">
-    <div class="container">
-      {obavijest.oznaka && <span class="tag">{obavijest.oznaka}</span>}
-      <span>
-        {obavijest.tekst}
-        {obavijest.telefon && (<> <a href={`tel:${telHref(obavijest.telefon)}`}>{obavijest.telefon}</a></>)}
-      </span>
-      <button class="x" id="announceX" aria-label="Zatvori">&#10005;</button>
+<!-- Gornja info-traka -->
+<div class="topbar">
+  <div class="container">
+    <a class="ti" href="/o-nama">
+      <svg viewBox="0 0 512 512"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm61.8-104.4l-84.9-61.7c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v141.7l66.8 48.6c5.4 3.9 6.5 11.4 2.6 16.8L334.6 349c-3.9 5.3-11.4 6.5-16.8 2.6z"/></svg>
+      Radno vrijeme
+    </a>
+    <a class="ti" href={`tel:${telHref(kontakt.telefon)}`}>
+      <svg viewBox="0 0 512 512"><path d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"/></svg>
+      {kontakt.telefon_display}
+    </a>
+    <a class="ti email" href={`mailto:${kontakt.email}`}>
+      <svg viewBox="0 0 512 512"><path d="M464 64H48C21.5 64 0 85.5 0 112v288c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48zm0 48v40.8c-22.4 18.3-58.2 46.7-134.6 106.5-16.8 13.2-50.2 45.1-73.4 44.7-23.2.4-56.6-31.5-73.4-44.7C106.2 199.5 70.4 171.1 48 152.8V112h416zM48 400V214.4c22.9 18.3 55.4 43.9 104.9 82.6 21.9 17.2 60.1 55.2 103.1 55 42.7.2 80.5-37.2 103.1-55 49.5-38.7 82-64.4 104.9-82.6V400H48z"/></svg>
+      {kontakt.email}
+    </a>
+    <div class="right">
+      <span class="lang">HR</span>
+      <a class="book" href="/narucivanje">Naručivanje</a>
     </div>
   </div>
-)}
+</div>
 
-<header class="mast">
-  <div class="container bar">
-    <a class="wordmark" href="/">
-      <img src="/images/logo-medical@2x.png" alt="Poliklinika Vallis Medica" />
-    </a>
-    <button class="burger" aria-label="Izbornik" aria-expanded="false"
-      onclick="const n=document.getElementById('nav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
+<!-- Header -->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><img src="/images/logo-medical@2x.png" alt="Poliklinika Vallis Medica" /></a>
+    <button class="nav-toggle" aria-label="Izbornik" onclick="document.querySelector('.main-nav').classList.toggle('open')">
       <span></span><span></span><span></span>
     </button>
-    <nav class="nav" id="nav" aria-label="Glavna navigacija">
-      <div><a href="/">Početna</a></div>
+    <nav class="main-nav">
+      <div><a href="/" class={act.home ? 'active' : ''}>Početna</a></div>
       <div>
-        <a href="/#specijalnosti">Specijalnosti ▾</a>
-        <div class="drop">
-          {specijalnosti.map((s) => (
-            <a href={`/specijalnosti/${s.id}`}>
-              <span class="idx">{String(s.data.broj ?? 0).padStart(2, '0')}</span>{s.data.naslov}
-            </a>
-          ))}
+        <a href="/#usluge" class={act.usluge ? 'active' : ''}>Usluge</a>
+        <div class="dropdown">
+          {specijalnosti.map((s) => (<a href={`/specijalnosti/${s.id}`}>{s.data.naslov}</a>))}
         </div>
       </div>
-      <div><a href="/o-nama">O nama</a></div>
-      <div><a href="/novosti">Novosti</a></div>
-      <div><a href="/kontakt">Kontakt</a></div>
-      <div class="book"><a href="/narucivanje">Naručivanje</a></div>
+      <div><a href="/o-nama" class={act.onama ? 'active' : ''}>O nama</a></div>
+      <div><a href="/novosti" class={act.novosti ? 'active' : ''}>Novosti</a></div>
+      <div><a href="/kontakt" class={act.kontakt ? 'active' : ''}>Kontakt</a></div>
     </nav>
   </div>
 </header>
 
 <slot />
 
-<footer class="ft">
-  <div class="container cols">
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container top">
     <div>
       <img src="/images/foot-widget-logo.png" alt="Poliklinika Vallis Medica" />
       <p><strong>Sjedište:</strong><br />{kontakt.adresa}</p>
       <p><strong>Tel / Fax:</strong> <a href={`tel:${telHref(kontakt.telefon)}`}>{kontakt.telefon_display}</a></p>
       <p><strong>E-mail:</strong> <a href={`mailto:${kontakt.email}`}>{kontakt.email}</a></p>
     </div>
-    <div class="links">
-      <h4>Sadržaj</h4>
-      <a href="/#specijalnosti">Specijalnosti</a>
-      <a href="/o-nama">O nama</a>
-      <a href="/novosti">Novosti</a>
-      <a href="/kontakt">Kontakt</a>
-      <a href="/narucivanje">Naručivanje</a>
+    <div>
+      <p class="lbl">Nazovite nas:</p>
+      <p class="big"><a href={`tel:${telHref(kontakt.telefon)}`}>{kontakt.telefon_display}</a></p>
+      <div class="links">
+        <a href="/">Početna</a>
+        <a href="/o-nama">O nama</a>
+        <a href="/novosti">Novosti</a>
+        <a href="/kontakt">Kontakt</a>
+        <a href="/narucivanje">Naručivanje</a>
+      </div>
     </div>
     <div>
-      <h4>S Vama od 1998.</h4>
-      <p>Poliklinika pruža usluge renomiranih liječnika iz najboljih zdravstvenih ustanova u Hrvatskoj — od ginekologije i kardiologije do dentalne medicine.</p>
+      <p class="lbl">Pošaljite nam email:</p>
+      <p class="big"><a href={`mailto:${kontakt.email}`}>{kontakt.email}</a></p>
+      <form class="nl" data-mailto={kontakt.email} data-subject="Prijava na newsletter">
+        <input type="email" name="E-mail" placeholder="Unesite Email adresu za Newsletter" required />
+        <button type="submit">Prijava</button>
+      </form>
     </div>
   </div>
-  <div class="container base">
-    <span>© <span id="god"></span> Poliklinika Vallis Medica</span>
+  <div class="container bottom">
+    <span>© <span id="god"></span> Poliklinika Vallis Medica. Sva prava pridržana.</span>
     <span>{kontakt.adresa_kratko}</span>
   </div>
 </footer>
 
-<script is:inline define:vars={{ dismissKey }}>
-  (function () {
-    var a = document.getElementById('announce');
-    if (a) {
-      try { if (localStorage.getItem(dismissKey) === '1') a.remove(); } catch (e) {}
-      var x = document.getElementById('announceX');
-      if (x) x.addEventListener('click', function () {
-        a.remove();
-        try { localStorage.setItem(dismissKey, '1'); } catch (e) {}
-      });
-    }
-  })();
+<script is:inline>
   var g = document.getElementById('god');
   if (g) g.textContent = new Date().getFullYear();
-</script>
 
-<script is:inline>
-  // Reveal-on-scroll
-  (function () {
-    var els = [].slice.call(document.querySelectorAll('.reveal'));
-    if (!els.length) return;
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!('IntersectionObserver' in window) || reduce.matches) {
-      els.forEach(function (el) { el.classList.add('in'); });
-      return;
-    }
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    els.forEach(function (el) { io.observe(el); });
-  })();
-
-  // Zatvori mobilni izbornik na klik linka / resize
-  (function () {
-    var nav = document.getElementById('nav');
-    if (!nav) return;
-    var burger = document.querySelector('.burger');
-    function close() { nav.classList.remove('open'); if (burger) burger.setAttribute('aria-expanded', 'false'); }
-    nav.querySelectorAll('a').forEach(function (a) {
-      if (!a.getAttribute('href') || a.getAttribute('href').indexOf('#') === -1) a.addEventListener('click', close);
+  // Obrasci -> mailto
+  document.querySelectorAll('form[data-mailto]').forEach(function (form) {
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var to = form.getAttribute('data-mailto');
+      var subj = form.getAttribute('data-subject') || 'Upit s web stranice';
+      var f = new FormData(form), lines = [];
+      f.forEach(function (v, k) { lines.push(k + ': ' + (v || '-')); });
+      location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(lines.join('\n'));
     });
-    window.addEventListener('resize', function () { if (window.innerWidth > 760) close(); });
-  })();
-
-  // Obrasci -> mailto (naručivanje / kontakt / newsletter)
-  (function () {
-    document.querySelectorAll('form[data-mailto]').forEach(function (form) {
-      form.addEventListener('submit', function (ev) {
-        ev.preventDefault();
-        var to = form.getAttribute('data-mailto');
-        var subj = form.getAttribute('data-subject') || 'Upit s web stranice';
-        var f = new FormData(form);
-        var lines = [];
-        f.forEach(function (v, k) { if (k !== 'email' || v) lines.push(k + ': ' + (v || '-')); });
-        location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(lines.join('\n'));
-      });
-    });
-  })();
+  });
 </script>
 </body>
 </html>

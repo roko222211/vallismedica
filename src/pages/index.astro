@@ -1,128 +1,66 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
-import { formatDate as fmt } from '../lib/date';
 import kontakt from '../data/kontakt.json';
 
 const spec = (await getCollection('specijalnosti')).sort(
   (a, b) => (a.data.broj ?? 99) - (b.data.broj ?? 99)
 );
-const latest = (await getCollection('novosti'))
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
-const telClean = kontakt.telefon.replace(/\s/g, '');
+const telHref = '+' + kontakt.telefon.replace(/\D/g, '').replace(/^00/, '');
 ---
 <Base
   title={'Poliklinika Vallis Medica — S Vama od 1998.'}
   description={'Poliklinika Vallis Medica, Zagreb — 14 specijalističkih ordinacija i renomirani liječnici iz najboljih zdravstvenih ustanova u Hrvatskoj. S Vama od 1998.'}
 >
-<main>
-
-<!-- ===== HERO ===== -->
+<!-- HERO -->
 <section class="hero">
   <div class="container">
-    <div class="hero-top">
-      <span class="lbl">Poliklinika Vallis Medica</span>
-      <span class="lbl">Zagreb — Est. 1998.</span>
-    </div>
-    <h1 class="reveal">Specijalistička<br />medicina, <span class="blue">od 1998.</span></h1>
-    <div class="hero-body">
-      <p class="lede reveal d1">Poliklinika okuplja renomirane liječnike iz najboljih zdravstvenih ustanova u Hrvatskoj — kroz četrnaest specijalističkih ordinacija, uz suvremenu dijagnostiku i predanost svakom pacijentu.</p>
-      <div class="hero-actions reveal d2">
-        <a class="cta" href="/narucivanje">Naručite se <span class="arw">→</span></a>
-        <a class="tlink" href="#specijalnosti">Specijalnosti <span class="arw">↓</span></a>
-      </div>
-    </div>
-    <div class="hero-meta reveal d2">
-      <div class="m"><b>14</b><span>Specijalnosti</span></div>
-      <div class="m"><b>1998.</b><span>Godina osnivanja</span></div>
-      <div class="m"><b>Zagreb</b><span>Božidarevićeva 7</span></div>
-    </div>
+    <h1>Poliklinika Vallis Medica</h1>
+    <p class="sub">S Vama od 1998.</p>
   </div>
 </section>
 
-<!-- ===== REGISTAR SPECIJALNOSTI ===== -->
-<section class="reg-sec" id="specijalnosti">
+<!-- USLUGE -->
+<section id="usluge">
   <div class="container">
-    <div class="reg-head">
-      <h2>Specijalnosti</h2>
-      <p class="note">Četrnaest ordinacija pod jednim krovom — od ginekologije i kardiologije do dentalne medicine.</p>
-    </div>
-    <div class="reg">
+    <div class="fgrid">
       {spec.map((s) => (
-        <a class="reg-item" href={`/specijalnosti/${s.id}`}>
-          <span class="reg-num">{String(s.data.broj ?? 0).padStart(2, '0')}</span>
-          <span class="reg-name">{s.data.naslov}</span>
-          <span class="reg-desc">{s.data.kratki}</span>
-          <span class="reg-go" aria-hidden="true">→</span>
+        <a class="fbox" href={`/specijalnosti/${s.id}`}>
+          <i class={s.data.ikona} aria-hidden="true"></i>
+          <div>
+            <h3>{s.data.naslov}</h3>
+            <p>{s.data.kratki}</p>
+          </div>
         </a>
       ))}
     </div>
   </div>
 </section>
 
-<!-- ===== O NAMA / STATEMENT ===== -->
-<section class="state">
-  <span class="bignum" aria-hidden="true">1998</span>
-  <div class="container">
-    <div class="state-grid">
-      <div class="side"><span class="lbl">O nama</span></div>
-      <div>
-        <blockquote class="reveal">Višegodišnja tradicija govori o kvaliteti usluge i <span class="blue">predanosti pacijentu.</span></blockquote>
-        <div class="after reveal d1">
-          <div class="col"><p><strong>O vašem zdravlju brinu renomirani liječnici</strong> iz najboljih zdravstvenih ustanova u Hrvatskoj.</p></div>
-          <div class="col">
-            <p>Briga i skrb, stručni pregledi i najnovije tehnologije u medicini.</p>
-            <p style="margin-top:18px"><a class="tlink" href="/o-nama">Više o nama <span class="arw">→</span></a></p>
-          </div>
-        </div>
-      </div>
+<!-- O NAMA -->
+<section style="padding-top:0">
+  <div class="container split">
+    <div>
+      <span class="kicker">O nama</span>
+      <h2 class="section-title">Višegodišnja tradicija kvalitete</h2>
+      <p class="section-lead">Poliklinika Vallis Medica osnovana je 1998. godine. Njezina višegodišnja tradicija govori o kvaliteti usluge i predanosti pacijentu. O vašem zdravlju brinu renomirani liječnici iz najboljih zdravstvenih ustanova.</p>
+      <div class="feature-row"><span class="dot"></span><p><strong>Briga i skrb</strong> za naše pacijente.</p></div>
+      <div class="feature-row"><span class="dot"></span><p><strong>Stručni pregledi</strong>, mišljenja i dijagnoze.</p></div>
+      <div class="feature-row"><span class="dot"></span><p><strong>Pratimo najnovije tehnologije</strong> u medicini.</p></div>
+      <p style="margin-top:24px"><a class="btn btn-primary" href="/o-nama">Više o nama</a></p>
     </div>
+    <img src="/images/about-us/ultra1.jpg" alt="Ultrazvučna dijagnostika u Poliklinici Vallis Medica" />
   </div>
 </section>
 
-{latest.length > 0 && (
-  <section style="padding-top:0">
+<!-- CTA -->
+<section style="padding-top:0">
+  <div class="cta-band">
     <div class="container">
-      <div class="sec-top" style="margin-bottom:34px">
-        <h2 style="font-size:clamp(1.6rem,3vw,2.4rem)">Novosti</h2>
-        <a class="tlink" href="/novosti">Sve novosti <span class="arw">→</span></a>
-      </div>
-      <div class="news-grid">
-        {latest.map((item) => (
-          <a class="nc" href={`/novosti/${item.id}`}>
-            <span class="nd">{fmt(item.data.date)}</span>
-            <h3>{item.data.title}</h3>
-            {item.data.summary && <p>{item.data.summary}</p>}
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-)}
-
-<!-- ===== INFO (tamni blok) ===== -->
-<section class="info">
-  <div class="container">
-    <span class="eyebrow">Praktične informacije</span>
-    <h2>Radno vrijeme i kontakt</h2>
-    <div class="info-grid">
-      <div class="info-col">
-        <h3>Radno vrijeme</h3>
-        <table>
-          {kontakt.radno_vrijeme.map((r) => (<tr><td>{r.dan}</td><td>{r.sat}</td></tr>))}
-        </table>
-      </div>
-      <div class="info-col">
-        <h3>Kontakt</h3>
-        <div class="line"><span class="k">Adresa</span><b>{kontakt.adresa}</b></div>
-        <div class="line"><span class="k">Telefon</span><a href={`tel:${telClean}`}>{kontakt.telefon_display}</a></div>
-        <div class="line"><span class="k">E-mail</span><a href={`mailto:${kontakt.email}`}>{kontakt.email}</a></div>
-        <a class="cta light" href="/narucivanje">Naručite se <span class="arw">→</span></a>
-      </div>
+      <h2>Naručite se na pregled</h2>
+      <p>Nazovite <a href={`tel:${telHref}`}>{kontakt.telefon_display}</a> ili pišite na <a href={`mailto:${kontakt.email}`}>{kontakt.email}</a></p>
+      <a class="btn" href="/narucivanje">Naručivanje</a>
     </div>
   </div>
 </section>
-
-</main>
 </Base>

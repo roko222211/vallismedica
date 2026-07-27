@@ -11,9 +11,9 @@ const items = (await getCollection('novosti')).sort(
   title={'Novosti — Poliklinika Vallis Medica'}
   description={'Novosti i obavijesti Poliklinike Vallis Medica — termini, usluge i događanja.'}
 >
-  <div class="phero">
+  <div class="page-hero">
     <div class="container">
-      <p class="crumb"><a href="/">Početna</a> · Novosti</p>
+      <p class="crumb"><a href="/">Početna</a> / Novosti</p>
       <h1>Novosti</h1>
     </div>
   </div>
@@ -21,19 +21,14 @@ const items = (await getCollection('novosti')).sort(
   <section>
     <div class="container">
       {items.length === 0 ? (
-        <p style="color:var(--muted)">Trenutno nema objavljenih novosti.</p>
+        <p style="color:#666">Trenutno nema objavljenih novosti.</p>
       ) : (
-        <div class="news-grid">
+        <div class="news-list">
           {items.map((item) => (
-            <a class="nc" href={`/novosti/${item.id}`}>
-              {item.data.coverImage && (
-                <span class="thumb"><img src={item.data.coverImage} alt={item.data.title} loading="lazy" /></span>
-              )}
-              <span class="in">
-                <span class="nd">{fmt(item.data.date)}</span>
-                <h3>{item.data.title}</h3>
-                {item.data.summary && <p>{item.data.summary}</p>}
-              </span>
+            <a class="news-item" href={`/novosti/${item.id}`}>
+              <span class="date">{fmt(item.data.date)}</span>
+              <h3>{item.data.title}</h3>
+              {item.data.summary && <p>{item.data.summary}</p>}
             </a>
           ))}
         </div>
