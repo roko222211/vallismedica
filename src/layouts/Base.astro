@@ -108,7 +108,7 @@ const schema = {
     <nav class="main-nav" id="mainnav" aria-label="Glavna navigacija">
       <div><a href="/" class={act.home ? 'active' : ''}>Početna</a></div>
       <div>
-        <a href="/#usluge" class={act.usluge ? 'active' : ''}>Usluge</a>
+        <a href="/specijalnosti" class={act.usluge ? 'active' : ''}>Usluge</a>
         <div class="dropdown">
           {specijalnosti.map((s) => (<a href={`/specijalnosti/${s.id}`}>{s.data.naslov}</a>))}
         </div>
