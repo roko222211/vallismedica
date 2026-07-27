@@ -15,22 +15,36 @@ const telHref = '+' + kontakt.telefon.replace(/\D/g, '').replace(/^00/, '');
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <h1>Poliklinika Vallis Medica</h1>
-    <p class="sub">S Vama od 1998.</p>
+    <p class="hero-eyebrow">Poliklinika · Zagreb · Od 1998.</p>
+    <h1>Specijalistička medicina, <em>od 1998.</em></h1>
+    <p class="sub">Renomirani liječnici iz najboljih zdravstvenih ustanova u Hrvatskoj — kroz četrnaest specijalističkih ordinacija, uz suvremenu dijagnostiku i predanost svakom pacijentu.</p>
+    <div class="hero-actions">
+      <a class="btn" href="/narucivanje">Naručite se <span class="arw">→</span></a>
+      <a class="btn btn-outline" href="#usluge">Naše usluge</a>
+    </div>
+    <div class="hero-trust">
+      <div class="t"><b>1998.</b><span>Godina osnivanja</span></div>
+      <div class="t"><b>14</b><span>Specijalnosti</span></div>
+      <div class="t"><b>Zagreb</b><span>Božidarevićeva 7</span></div>
+    </div>
   </div>
 </section>
 
 <!-- USLUGE -->
 <section id="usluge">
   <div class="container">
+    <div class="sec-head center">
+      <span class="kicker">Naše usluge</span>
+      <h2 class="section-title">Specijalističke <em>ordinacije</em></h2>
+      <p class="section-lead">Od ginekologije i kardiologije do dentalne medicine — sve na jednom mjestu, uz stručnjake iz najboljih zdravstvenih ustanova.</p>
+    </div>
     <div class="fgrid">
       {spec.map((s) => (
         <a class="fbox" href={`/specijalnosti/${s.id}`}>
           <i class={s.data.ikona} aria-hidden="true"></i>
-          <div>
-            <h3>{s.data.naslov}</h3>
-            <p>{s.data.kratki}</p>
-          </div>
+          <h3>{s.data.naslov}</h3>
+          <p>{s.data.kratki}</p>
+          <span class="go">Saznajte više →</span>
         </a>
       ))}
     </div>
@@ -38,28 +52,30 @@ const telHref = '+' + kontakt.telefon.replace(/\D/g, '').replace(/^00/, '');
 </section>
 
 <!-- O NAMA -->
-<section style="padding-top:0">
+<section style="padding-top:0" class="about">
   <div class="container split">
     <div>
       <span class="kicker">O nama</span>
-      <h2 class="section-title">Višegodišnja tradicija kvalitete</h2>
+      <h2 class="section-title">Višegodišnja tradicija <em>kvalitete</em></h2>
       <p class="section-lead">Poliklinika Vallis Medica osnovana je 1998. godine. Njezina višegodišnja tradicija govori o kvaliteti usluge i predanosti pacijentu. O vašem zdravlju brinu renomirani liječnici iz najboljih zdravstvenih ustanova.</p>
       <div class="feature-row"><span class="dot"></span><p><strong>Briga i skrb</strong> za naše pacijente.</p></div>
       <div class="feature-row"><span class="dot"></span><p><strong>Stručni pregledi</strong>, mišljenja i dijagnoze.</p></div>
       <div class="feature-row"><span class="dot"></span><p><strong>Pratimo najnovije tehnologije</strong> u medicini.</p></div>
-      <p style="margin-top:24px"><a class="btn btn-primary" href="/o-nama">Više o nama</a></p>
+      <p style="margin-top:28px"><a class="btn btn-ghost" href="/o-nama">Više o nama <span class="arw">→</span></a></p>
     </div>
-    <img src="/images/about-us/ultra1.jpg" alt="Ultrazvučna dijagnostika u Poliklinici Vallis Medica" />
+    <div class="media">
+      <img src="/images/about-us/ultra1.jpg" alt="Ultrazvučna dijagnostika u Poliklinici Vallis Medica" />
+    </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section style="padding-top:0">
-  <div class="cta-band">
-    <div class="container">
+  <div class="container">
+    <div class="cta-band">
       <h2>Naručite se na pregled</h2>
       <p>Nazovite <a href={`tel:${telHref}`}>{kontakt.telefon_display}</a> ili pišite na <a href={`mailto:${kontakt.email}`}>{kontakt.email}</a></p>
-      <a class="btn" href="/narucivanje">Naručivanje</a>
+      <a class="btn" href="/narucivanje">Obrazac za naručivanje <span class="arw">→</span></a>
     </div>
   </div>
 </section>
